@@ -25,6 +25,7 @@ cmd,date,+%H:%M
 txt,\n
 
 txt,ba:
+cmd,battery
 cmd,battery,+
 txt,\n
 
@@ -37,7 +38,7 @@ It will render something like this.
 
 ```
 ti:14:07
-ba:76
+ba:76+
 li:70
 ```
 
@@ -48,6 +49,10 @@ in the output. Most programs return a newline at the end of their STDOUT, but
 notabar strips them to allow for more granular control. You can simply put a
 `txt,\n` when you want a newline. Line wrapping is of course controlled by your
 notification daemon so investigate its config if weird line wrapping occurs.
+
+In that example config the battery and backlight programs are also small
+utilities I've developed. They can be found in my collection of small programs
+here https://git.sr.ht/~kota/useless
 
 More info can be found in notabar(1) or for the config in notabar(5)
 
