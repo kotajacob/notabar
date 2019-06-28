@@ -15,7 +15,7 @@ More info can be found in notabar(1) or for the config in notabar(5)
 The config file for notabar is where you specify which programs provide text to
 be displayed by notabar. The config file is a simple csv file which by default
 is located in `~/.config/notabar/config` though if you've changed your
-XDG_CONFIG_HOME it will follow that standard.
+`XDG_CONFIG_HOME` it will follow that standard.
 
 Below is an example config.
 
