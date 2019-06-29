@@ -15,18 +15,19 @@ import (
 const cDir string = "notabar"
 const cFile string = "config"
 
-// placeholder for XDG config implementation
+// find config file
 // see : https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 func xdg() string {
 	return filepath.Join(os.Getenv("HOME"), ".config")
 }
 
-// placeholder for default config generation
+// save default config file
 func makeConf(p string, d string) {
 }
 
-// read a config file and return a
-func readConf(path string) {
+// read config file from path and return map of string arrays
+func readConf(path string) map[int][]string {
+	entries := make(map[int][]string)
 	conf, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "notabar: reading config")
@@ -35,6 +36,7 @@ func readConf(path string) {
 	r := csv.NewReader(strings.NewReader(string(conf)))
 	r.Comment = '#'        // allows for comment lines starting with #
 	r.FieldsPerRecord = -1 // allows for variable number of fields
+	i := 0
 	for {
 		record, err := r.Read()
 		if err == io.EOF {
@@ -43,15 +45,59 @@ func readConf(path string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(record)
-		fmt.Printf("%T\n", record)
+		// fmt.Println(i, record)
+		entries[i] = record
+		i++
 	}
+	return entries
 }
 
-// placeholder send the notification
+// take txt string array and return finalized string
+func txt(entry []string) string {
+	s := ""
+	switch entry[1] {
+	case "\\n":
+		s = s + "\n"
+	default:
+		s = s + entry[1]
+	}
+	return s
+}
+
+// take cmd string array and return finalized string
+func cmd(entry []string) string {
+	c := entry[1]
+	a := entry[2:]
+	out, err := exec.Command(c, a...).Output()
+	if err != nil {
+		log.Printf("Command finished with error: %v", err)
+	}
+	s := strings.TrimSuffix(string(out), "\n")
+	return s
+}
+
+// take map of string arrays and return notification string
+func build(entries map[int][]string) string {
+	s := ""
+	for e := 0; e < len(entries); e++ { // e = entry
+		switch entries[e][0] {
+		case "txt":
+			s = s + txt(entries[e])
+		case "cmd":
+			s = s + cmd(entries[e])
+		default:
+			// error
+			fmt.Println("Error: Unkown config entry type")
+		}
+	}
+	return s
+}
+
+// run the notification string
 func notify(s string) {
-	cmd := exec.Command("notify-send", s)
-	err := cmd.Run()
+	s = strings.TrimSuffix(s, "\n")
+	c := exec.Command("notify-send", s)
+	err := c.Run()
 	if err != nil {
 		log.Printf("Command finished with error: %v", err)
 	}
@@ -59,7 +105,7 @@ func notify(s string) {
 
 func main() {
 	config := filepath.Join(xdg(), cDir, cFile)
-	fmt.Println(config)
-	readConf(config)
-	notify("test")
+	entries := readConf(config)
+	note := build(entries)
+	notify(note)
 }
