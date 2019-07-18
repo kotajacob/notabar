@@ -1,28 +1,60 @@
-notabar(1) [""["notabar-VERSION"]]
+notabar(5) [""["notabar-VERSION"]]
 
 # NAME
 
 notabar - because bars are for noobs
 
-# SYNOPSIS
-
-*notabar* - load default "config" file++
-*notabar [config]* - load specific "config" file
-
 # DESCRIPTION
 
-Display the output of several programs in a system notification window. This
-can be used as a mnml information tool showing time, battery, volume, wifi, and
-whatever else you want at the press of a buttom.
+The configuration files for notabar are plain text cvs files where each line is
+an entry with a key and one or more values. The configuration files are read
+from ~/.config/notabar/ by notabar(1). You may create several different
+configuration files and run them seperately. Below are all the possible keys
+and values they may have.
 
-The notabar command accepts a single argument, the name of the config file you
-wish to use. If no argument is provided it will attempt to load a config file
-named config in ~/.config/notabar/. Information about the config file format
-can be found in notabar(5).
+Keys
+	- txt,string
+	- cmd,command,argument(s)
+
+Blank lines or lines starting with \# are ignored. Newlines are removed from
+commands outputs. For the txt key there are a few "special" characters allowed
+which are listed below.
+
+txt special characters
+	- \\a = U+0007 = alert or bell
+	- \\b = U+0008 = backspace
+	- \\f = U+000C = form feed
+	- \\n = U+000A = line feed or newline
+	- \\r = U+000D = carriage return
+	- \\t = U+0009 = horizontal tab
+	- \\v = U+000b = vertical tab
+	- \\\\ = U+005c = backslash
+	- \\' = U+0027 = single quote
+	- \\" = U+0022 = double quote
+
+That list comes directly from golang so a current up to date list can be found
+here https://golang.org/ref/spec#Rune_literals
+
+# EXAMPLES
+
+\#Time notification++
+txt,time:++
+cmd,date,+%H:%M++
+txt,\n
+
+This will print "time:20:34" if it is currently 8:34pm.
+
+\#Volume notification++
+txt,volume:++
+cmd,pamixer,--get-volume-human++
+txt,\n
+
+This will print the "volume:50" if your current volume as seen 
+by `pamixer --get-human-volume` is 50.
 
 # SEE ALSO
 
-notabar(5)
+notabar(1)
 
 # AUTHORS
 

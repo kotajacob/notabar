@@ -30,7 +30,7 @@ func readConf(path string) map[int][]string {
 	entries := make(map[int][]string)
 	conf, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "notabar: reading config")
+		fmt.Fprintf(os.Stderr, "notabar: reading config ")
 	}
 
 	r := csv.NewReader(strings.NewReader(string(conf)))
@@ -104,7 +104,13 @@ func notify(s string) {
 }
 
 func main() {
+	// default config
 	config := filepath.Join(xdg(), cDir, cFile)
+	// read arguments
+	if len(os.Args) > 1 {
+		// use argument config file
+		config = filepath.Join(xdg(), cDir, os.Args[1])
+	}
 	entries := readConf(config)
 	note := build(entries)
 	notify(note)
