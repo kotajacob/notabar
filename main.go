@@ -45,7 +45,6 @@ func readConf(path string) map[int][]string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// fmt.Println(i, record)
 		entries[i] = record
 		i++
 	}
