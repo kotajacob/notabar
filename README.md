@@ -34,3 +34,10 @@ Defaults to `/usr/local/`
 ## Uninstall
 
 `sudo make uninstall`
+
+## Resources
+
+[Send patches](https://git-send-email.io) and questions to
+[~kota/notabar@lists.sr.ht](https://lists.sr.ht/~kota/notabar).
+
+Bugs & todo here: [~kota/notabar](https://todo.sr.ht/~kota/notabar)
