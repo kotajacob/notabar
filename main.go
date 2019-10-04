@@ -20,16 +20,6 @@ func xdg() string {
 	return filepath.Join(os.Getenv("HOME"), ".config")
 }
 
-// wrap parseConf to read paths
-func parsePath(path string) map[int][]string {
-	f, err := os.Open(path)
-	if err != nil {
-		log.Printf("Failed opening config file: %v", err)
-	}
-	defer f.Close()
-	return parseConf(f)
-}
-
 // read config file and return map of string arrays
 func parseConf(f *os.File) map[int][]string {
 	entries := make(map[int][]string)
@@ -107,23 +97,7 @@ func notify(s string) {
 }
 
 func main() {
-	// check if stdin was passed
-	if _, err := os.Stdin.Stat(); err != nil {
-		// if stdin was not passed
-		arg := filepath.Join(xdg(), cDir, defaultConfig)
-		args := os.Args[1:]
-		if len(args) > 1 {
-			// if there was an argument passed
-			arg = filepath.Join(xdg(), cDir, os.Args[1])
-		}
-		// open the config file
-		entries := parsePath(arg)
-		note := build(entries)
-		notify(note)
-	} else {
-		// stdin is available
-		entries := parseConf(os.Stdin)
-		note := build(entries)
-		notify(note)
-	}
+	entries := parseConf(os.Stdin)
+	note := build(entries)
+	notify(note)
 }

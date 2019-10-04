@@ -8,9 +8,9 @@ notabar - because bars are for noobs
 
 The configuration files for notabar are plain text cvs files where each line is
 an entry with a key and one or more values. The configuration files are read
-from ~/.config/notabar/ by notabar(1). You may create several different
-configuration files and run them seperately. Below are all the possible keys
-and values they may have.
+from STDIN by notabar(1). You may create several different configuration files
+and run them seperately. Below are all the possible keys and values they may
+have.
 
 Keys
 	- txt,string

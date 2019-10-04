@@ -2,26 +2,17 @@ notabar(1) [""["notabar-VERSION"]]
 
 # NAME
 
-notabar - because bars are for noobs
-
-# SYNOPSIS
-
-*notabar* - load default "config" file++
-*notabar [config]* - load specific "config" file
+notabar - display a notification with some formatting
 
 # DESCRIPTION
 
-Display the output of several programs in a system notification window. This
-can be used as a mnml information tool showing time, battery, volume, wifi, and
-whatever else you want at the press of a buttom.
+Display the output of programs in a notification window. This tool has many
+possible uses. It was created a system notification tool that shows time,
+battery, volume, and wifi information when relevant, but it can be used anytime
+you want to display a notification with some program's output.
 
-The notabar command accepts a single argument, the name of the config file you
-wish to use. If no argument is provided it will attempt to load a config file
-named config in ~/.config/notabar/. Information about the config file format
-can be found in notabar(5).
-
-Alternatively if a file is passed into STDIN that will be read ignoring any
-arguments.
+The notabar reads a specific, simple, text format from STDIN. It takes no
+arguments. For information about the config format please see notabar(5).
 
 # SEE ALSO
 
