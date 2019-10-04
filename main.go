@@ -13,26 +13,30 @@ import (
 )
 
 const cDir string = "notabar"
-const cFile string = "config"
+const defaultConfig string = "config"
 
 // find config file
-// see : https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 func xdg() string {
 	return filepath.Join(os.Getenv("HOME"), ".config")
 }
 
-// save default config file
-func makeConf(p string, d string) {
+// wrap parseConf to read paths
+func parsePath(path string) map[int][]string {
+	f, err := os.Open(path)
+	if err != nil {
+		log.Printf("Failed opening config file: %v", err)
+	}
+	defer f.Close()
+	return parseConf(f)
 }
 
-// read config file from path and return map of string arrays
-func readConf(path string) map[int][]string {
+// read config file and return map of string arrays
+func parseConf(f *os.File) map[int][]string {
 	entries := make(map[int][]string)
-	conf, err := ioutil.ReadFile(path)
+	conf, err := ioutil.ReadAll(f)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "notabar: reading config ")
+		log.Printf("Failed reading config file: %v", err)
 	}
-
 	r := csv.NewReader(strings.NewReader(string(conf)))
 	r.Comment = '#'        // allows for comment lines starting with #
 	r.FieldsPerRecord = -1 // allows for variable number of fields
@@ -103,14 +107,23 @@ func notify(s string) {
 }
 
 func main() {
-	// default config
-	config := filepath.Join(xdg(), cDir, cFile)
-	// read arguments
-	if len(os.Args) > 1 {
-		// use argument config file
-		config = filepath.Join(xdg(), cDir, os.Args[1])
+	// check if stdin was passed
+	if _, err := os.Stdin.Stat(); err != nil {
+		// if stdin was not passed
+		arg := filepath.Join(xdg(), cDir, defaultConfig)
+		args := os.Args[1:]
+		if len(args) > 1 {
+			// if there was an argument passed
+			arg = filepath.Join(xdg(), cDir, os.Args[1])
+		}
+		// open the config file
+		entries := parsePath(arg)
+		note := build(entries)
+		notify(note)
+	} else {
+		// stdin is available
+		entries := parseConf(os.Stdin)
+		note := build(entries)
+		notify(note)
 	}
-	entries := readConf(config)
-	note := build(entries)
-	notify(note)
 }
