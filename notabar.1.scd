@@ -20,6 +20,9 @@ wish to use. If no argument is provided it will attempt to load a config file
 named config in ~/.config/notabar/. Information about the config file format
 can be found in notabar(5).
 
+Alternatively if a file is passed into STDIN that will be read ignoring any
+arguments.
+
 # SEE ALSO
 
 notabar(5)
