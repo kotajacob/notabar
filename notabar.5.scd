@@ -15,6 +15,7 @@ have.
 Keys
 	- txt,string
 	- cmd,command,argument(s)
+	- urgency,string
 
 Blank lines or lines starting with \# are ignored. Newlines are removed from
 commands outputs. For the txt key there are a few "special" characters allowed
@@ -35,9 +36,18 @@ txt special characters
 That list comes directly from golang so a current up to date list can be found
 here https://golang.org/ref/spec#Rune_literals
 
+The urgency key is not required, by default all notifications will be urgency
+normal. Below are the possible values you can specify.
+
+urgency values
+	- low
+	- normal
+	- critical
+
 # EXAMPLES
 
 \#Time notification++
+urgency,low
 txt,time:++
 cmd,date,+%H:%M++
 txt,\n

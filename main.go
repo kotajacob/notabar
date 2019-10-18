@@ -70,26 +70,29 @@ func cmd(entry []string) string {
 }
 
 // take map of string arrays and return notification string
-func build(entries map[int][]string) string {
+func build(entries map[int][]string) (string, string) {
 	s := ""
+	u := "normal"
 	for e := 0; e < len(entries); e++ { // e = entry
 		switch entries[e][0] {
 		case "txt":
 			s = s + txt(entries[e])
 		case "cmd":
 			s = s + cmd(entries[e])
+		case "urgency":
+			u = entries[e][1]
 		default:
 			// error
 			fmt.Println("Error: Unkown config entry type")
 		}
 	}
-	return s
+	return s, u
 }
 
 // run the notification string
-func notify(s string) {
+func notify(s string, u string) {
 	s = strings.TrimSuffix(s, "\n")
-	c := exec.Command("notify-send", s)
+	c := exec.Command("notify-send", "-u", u, s)
 	err := c.Run()
 	if err != nil {
 		log.Printf("Command finished with error: %v", err)
@@ -98,6 +101,6 @@ func notify(s string) {
 
 func main() {
 	entries := parseConf(os.Stdin)
-	note := build(entries)
-	notify(note)
+	note, urgency := build(entries)
+	notify(note, urgency)
 }
