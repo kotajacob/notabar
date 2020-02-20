@@ -23,6 +23,7 @@ install: build
 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
 	cp -f notabar.1 $(DESTDIR)$(MANPREFIX)/man1/notabar.1
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/notabar.1
+	mkdir -p $(DESTDIR)$(MANPREFIX)/man5
 	cp -f notabar.5 $(DESTDIR)$(MANPREFIX)/man5/notabar.5
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man5/notabar.5
 
