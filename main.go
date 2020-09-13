@@ -8,17 +8,11 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
 
 const cDir string = "notabar"
 const defaultConfig string = "config"
-
-// find config file
-func xdg() string {
-	return filepath.Join(os.Getenv("HOME"), ".config")
-}
 
 // read config file and return map of string arrays
 func parseConf(f *os.File) map[int][]string {
