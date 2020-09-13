@@ -11,9 +11,6 @@ import (
 	"strings"
 )
 
-const cDir string = "notabar"
-const defaultConfig string = "config"
-
 // read config file and return map of string arrays
 func parseConf(f *os.File) map[int][]string {
 	entries := make(map[int][]string)
