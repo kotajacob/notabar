@@ -1,5 +1,5 @@
 # notabar
-VERSION = 0.4.0
+VERSION = 0.4.1
 
 # Customize below to fit your system
 
