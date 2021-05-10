@@ -11,7 +11,7 @@ whatever else you want via simple configuration files and running the program.
 More info can be found in `notabar(1)` or for the config in `notabar(5)`
 
 Screenshot of configuration and example notification.
-![1](https://paste.cf/e3cddc120bf546f6dab93ef3791eeb66798341f5.png)
+![1](img.png)
 
 ## Build
 
